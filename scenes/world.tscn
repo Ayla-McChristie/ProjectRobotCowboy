@@ -88,20 +88,20 @@ shadow_enabled = true
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_itltl")
 
-[node name="CharacterBody3D" type="CharacterBody3D" parent="."]
+[node name="player" type="CharacterBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0068388, 0.151876, -0.00944901)
 script = ExtResource("1_o05fi")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="CharacterBody3D"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="player"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.10988, 0)
 mesh = SubResource("CapsuleMesh_kq1vs")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="player"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.10988, 0)
 shape = SubResource("ConvexPolygonShape3D_ee7ij")
 
-[node name="Head" type="Node3D" parent="CharacterBody3D"]
+[node name="Head" type="Node3D" parent="player"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.59287, 0)
 
-[node name="Camera3D" type="Camera3D" parent="CharacterBody3D/Head"]
+[node name="Camera3D" type="Camera3D" parent="player/Head"]
 transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0)

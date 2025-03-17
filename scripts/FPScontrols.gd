@@ -12,7 +12,7 @@ const AIR_DRIFT = 3.0
 const FRICTION = 7.0
 
 #Coyote time / jump assist
-const COYOTE_TIME = 1.0
+const COYOTE_TIME = 0.4
 var coyote_timer = 0.0
 var has_jumped = false
 
@@ -66,12 +66,11 @@ func _physics_process(delta: float) -> void:
 		#---------------------------------
 		if coyote_timer > 0.0:
 			coyote_timer = 0.0
-			#---------------------------------
+		#---------------------------------
 		#RESET JUMP
 		#---------------------------------
 		if has_jumped == true:
 			has_jumped = false
-	print(coyote_timer)
 	# Handle jump.
 	if Input.is_action_just_pressed("ui_accept") and coyote_timer < COYOTE_TIME and has_jumped == false:
 		velocity.y = JUMP_VELOCITY

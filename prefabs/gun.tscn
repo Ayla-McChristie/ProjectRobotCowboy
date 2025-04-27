@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://bjx8ps4cs681b"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_04jxk"]
+albedo_color = Color(0.588235, 0.235294, 0.568627, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_fej0y"]
+size = Vector3(0.25, 0.25, 1)
+
+[node name="Gun" type="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.884444, -0.251975, -0.84827)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+material_override = SubResource("StandardMaterial3D_04jxk")
+cast_shadow = 0
+mesh = SubResource("BoxMesh_fej0y")

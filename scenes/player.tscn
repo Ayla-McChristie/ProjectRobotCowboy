@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://bakj2c6elt2fg"]
 
-[ext_resource type="Script" path="res://scripts/FPScontrols.gd" id="1_r2wyn"]
+[ext_resource type="Script" path="res://scripts/PlayerController.gd" id="1_r2wyn"]
 [ext_resource type="PackedScene" uid="uid://bjx8ps4cs681b" path="res://scenes/gun.tscn" id="2_rf2sv"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_kq1vs"]

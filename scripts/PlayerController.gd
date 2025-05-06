@@ -32,16 +32,10 @@ const FALL_GRAVITY = 12
 const JUMP_GRAVITY = 9.8
 #endregion
 
-#Bullets
-var bullet = load("res://scenes/bullet.tscn")
-var instance
-
 #References
 #region References
 @onready var head = $Head
 @onready var camera = $Head/Camera3D
-@onready var gun_anim = $Head/Camera3D/Gun/AnimationPlayer
-@onready var gun_barrel = $Head/Camera3D/Gun/RayCast3D
 #endregion
 
 func  _ready():
@@ -121,12 +115,8 @@ func _physics_process(delta: float) -> void:
 	
 	#shooting 
 	if Input.is_action_pressed("primary_fire"):
-		if !gun_anim.is_playing():
-			gun_anim.play("Shoot")
-			instance = bullet.instantiate()
-			instance.position = gun_barrel.global_position
-			instance.transform.basis = gun_barrel.global_transform.basis
-			get_parent().add_child(instance)
+		#TODO reference gun_controller Fire
+		pass
 
 	move_and_slide()
 

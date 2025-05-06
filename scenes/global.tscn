@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://e7isfel58s8k"]
+
+[ext_resource type="Script" path="res://scripts/GunController.gd" id="1_mhbhr"]
+
+[node name="Global" type="Node2D"]
+
+[node name="GunController" type="Node3D" parent="."]
+script = ExtResource("1_mhbhr")

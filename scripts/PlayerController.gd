@@ -36,10 +36,13 @@ const JUMP_GRAVITY = 9.8
 #region References
 @onready var head = $Head
 @onready var camera = $Head/Camera3D
+@onready var gun = $Head/Camera3D/Gun
+
 #endregion
 
 func  _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	
 #---------------------------------
 #CAMERA INPUT
 #---------------------------------
@@ -52,6 +55,7 @@ func _unhandled_input(event):
 #MOVEMENT
 #---------------------------------
 func _physics_process(delta: float) -> void:
+#region Gravity
 	# Add the gravity.
 	if not is_on_floor():
 		#---------------------------------
@@ -77,17 +81,23 @@ func _physics_process(delta: float) -> void:
 		#---------------------------------
 		if has_jumped == true:
 			has_jumped = false
+#endregion
+#region Jump
 	# Handle jump.
 	if Input.is_action_just_pressed("ui_accept") and coyote_timer < COYOTE_TIME and has_jumped == false:
 		velocity.y = JUMP_VELOCITY
 		has_jumped = true
+#endregion
 	
+#region Sprint
 	# Handle sprint
 	if Input.is_action_pressed("sprint"):
 		speed = SPRINT_SPEED
 	else:
 		speed = WALK_SPEED
+#endregion
 
+#region Walking
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
 	var input_dir := Input.get_vector("move_left", "move_right", "move_up", "move_down")
@@ -102,21 +112,32 @@ func _physics_process(delta: float) -> void:
 	else:
 		velocity.x = lerp(velocity.x, direction.x * speed, delta * AIR_DRIFT)
 		velocity.z = lerp(velocity.z, direction.z * speed, delta * AIR_DRIFT)
+#endregion
 	
+#region Head Bob
 	#head bob
 	if is_on_floor():
 		t_bob += delta * velocity.length() * float(is_on_floor())
 		camera.transform.origin = _headbob(t_bob)
 		
+#endregion
+#region Fov
 	#fov
 	var velocity_clamped = clamp(velocity.length(), 0.5, SPRINT_SPEED * 2)
 	var target_fov = BASE_FOV + FOV_CHANGE * velocity_clamped
 	camera.fov = lerp(camera.fov, target_fov, delta *8.0)
+#endregion
 	
+#region Gun
 	#shooting 
 	if Input.is_action_pressed("primary_fire"):
 		#TODO reference gun_controller Fire
+		gun.Fire()
 		pass
+	
+	if Input.is_action_pressed("reload"):
+		gun.Reload(Global.BulletType.Normal)
+#endregion
 
 	move_and_slide()
 

@@ -125,7 +125,7 @@ func _physics_process(delta: float) -> void:
 	#fov
 	var velocity_clamped = clamp(velocity.length(), 0.5, SPRINT_SPEED * 2)
 	var target_fov = BASE_FOV + FOV_CHANGE * velocity_clamped
-	camera.fov = lerp(camera.fov, target_fov, delta *8.0)
+	#camera.fov = lerp(camera.fov, target_fov, delta *8.0)
 #endregion
 	
 #region Gun

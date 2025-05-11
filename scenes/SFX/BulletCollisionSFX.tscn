@@ -1,0 +1,14 @@
+[gd_scene load_steps=4 format=3 uid="uid://ven0mn1s48vs"]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_40jjy"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_kjxkn"]
+albedo_color = Color(1, 0.592157, 0.054902, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_xjuik"]
+material = SubResource("StandardMaterial3D_kjxkn")
+size = Vector3(0.1, 0.1, 0.1)
+
+[node name="BulletCollisionSfx" type="GPUParticles3D"]
+process_material = SubResource("ParticleProcessMaterial_40jjy")
+draw_pass_1 = SubResource("BoxMesh_xjuik")

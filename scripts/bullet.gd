@@ -12,3 +12,7 @@ func _ready() -> void:
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	position += transform.basis * Vector3(0,0, -SPEED) * delta
+	if	ray.is_colliding():
+		#TODO add hit sfx
+		queue_free()
+		print_debug("bullet collided")

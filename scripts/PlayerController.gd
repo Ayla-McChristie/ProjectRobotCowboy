@@ -32,6 +32,8 @@ const FALL_GRAVITY = 12
 const JUMP_GRAVITY = 9.8
 #endregion
 
+var in_reload_mode = false
+
 #References
 #region References
 @onready var head = $Head
@@ -130,7 +132,7 @@ func _physics_process(delta: float) -> void:
 	
 #region Gun
 	#shooting 
-	if Input.is_action_pressed("primary_fire"):
+	if Input.is_action_just_pressed("primary_fire"):
 		#TODO reference gun_controller Fire
 		gun.Fire()
 		pass

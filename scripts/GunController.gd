@@ -38,9 +38,6 @@ func Reload(bullet : Global.BulletType) -> void:
 		if can_reload && !gun_anim.is_playing() && !Input.is_action_pressed("primary_fire"):
 			gun_anim.play("Reload")
 			print_debug("Loading ammo")
-			#--------------------------------
-			#TODO reload animation
-			#--------------------------------
 			LoadAmmo(bullet)
 			print_debug(cylinder.size())
 			

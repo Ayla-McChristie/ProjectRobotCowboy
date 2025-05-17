@@ -1,6 +1,7 @@
-[gd_scene load_steps=13 format=3 uid="uid://ven0mn1s48vs"]
+[gd_scene load_steps=14 format=3 uid="uid://ven0mn1s48vs"]
 
 [ext_resource type="Script" path="res://scripts/OneShotParticle.gd" id="1_vfvbc"]
+[ext_resource type="AudioStream" uid="uid://xs8mbbbtqrsr" path="res://Audio/Explosion.wav" id="2_gpo54"]
 
 [sub_resource type="Curve" id="Curve_25dby"]
 _data = [Vector2(0, 1), 0.0, 0.0477333, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
@@ -68,3 +69,8 @@ local_coords = true
 process_material = SubResource("ParticleProcessMaterial_40jjy")
 draw_pass_1 = SubResource("QuadMesh_ddpnp")
 script = ExtResource("1_vfvbc")
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("2_gpo54")
+volume_db = -9.693
+autoplay = true

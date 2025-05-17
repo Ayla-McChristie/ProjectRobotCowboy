@@ -42,6 +42,9 @@ var in_reload_mode = false
 
 #endregion
 
+#Audio
+@export var audio_jump : AudioStreamPlayer
+
 func  _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	
@@ -89,6 +92,7 @@ func _physics_process(delta: float) -> void:
 	if Input.is_action_just_pressed("ui_accept") and coyote_timer < COYOTE_TIME and has_jumped == false:
 		velocity.y = JUMP_VELOCITY
 		has_jumped = true
+		audio_jump.play()
 #endregion
 	
 #region Sprint
@@ -133,7 +137,6 @@ func _physics_process(delta: float) -> void:
 #region Gun
 	#shooting 
 	if Input.is_action_just_pressed("primary_fire"):
-		#TODO reference gun_controller Fire
 		gun.Fire()
 		pass
 	

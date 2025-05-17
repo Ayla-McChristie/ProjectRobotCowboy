@@ -14,6 +14,10 @@ var can_reload = true
 var normal_bullet = load("res://scenes/bullet.tscn")
 var instance
 
+#Audio
+@export var audio_shoot : AudioStreamPlayer3D
+@export var audio_reload : AudioStreamPlayer3D
+
 @onready var gun_anim = $AnimationPlayer
 @onready var gun_barrel = $RayCast3D
 
@@ -27,6 +31,9 @@ func Fire() -> void:
 	if cylinder.size() > 0:
 		if can_shoot && !gun_anim.is_playing():
 			gun_anim.play("Shoot")
+			
+			audio_shoot.play()
+			
 			instance = normal_bullet.instantiate()
 			instance.position = gun_barrel.global_position
 			instance.transform.basis = gun_barrel.global_transform.basis
@@ -37,6 +44,9 @@ func Reload(bullet : Global.BulletType) -> void:
 	if cylinder.size() < 6:
 		if can_reload && !gun_anim.is_playing() && !Input.is_action_pressed("primary_fire"):
 			gun_anim.play("Reload")
+			
+			audio_reload.play()
+			
 			print_debug("Loading ammo")
 			LoadAmmo(bullet)
 			print_debug(cylinder.size())

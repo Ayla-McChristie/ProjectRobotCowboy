@@ -1,4 +1,4 @@
-extends Node
+extends Node3D
 
 const MAXAMMO = 6
 
@@ -14,6 +14,8 @@ var can_reload = true
 var normal_bullet = load("res://scenes/bullet.tscn")
 var instance
 
+#Camera Ray
+@export var ray : RayCast3D
 #Audio
 @export var audio_shoot : AudioStreamPlayer3D
 @export var audio_reload : AudioStreamPlayer3D
@@ -42,7 +44,7 @@ func Fire() -> void:
 		
 func Reload(bullet : Global.BulletType) -> void:
 	if cylinder.size() < 6:
-		if can_reload && !gun_anim.is_playing() && !Input.is_action_pressed("primary_fire"):
+		if !gun_anim.is_playing() && !Input.is_action_pressed("primary_fire"):
 			gun_anim.play("Reload")
 			
 			audio_reload.play()
@@ -67,3 +69,4 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	if !can_reload && reload_timestamp < Time.get_ticks_msec():
 		can_reload = true
+	

@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://b3d1xhuuyqamq"
+path="res://.godot/imported/Party Favor.mp3-876a7db141775933ea45b1c63d30c61e.mp3str"
+
+[deps]
+
+source_file="res://Audio/Party Favor.mp3"
+dest_files=["res://.godot/imported/Party Favor.mp3-876a7db141775933ea45b1c63d30c61e.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

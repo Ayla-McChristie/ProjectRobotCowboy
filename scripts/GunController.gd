@@ -2,6 +2,11 @@ extends Node3D
 
 const MAXAMMO = 6
 
+#Camera Ray
+@export var ray : RayCast3D
+
+@export var aim_angle : float = 10
+
 
 
 var cylinder: Array[Global.BulletType]
@@ -14,14 +19,14 @@ var can_reload = true
 var normal_bullet = load("res://scenes/bullet.tscn")
 var instance
 
-#Camera Ray
-@export var ray : RayCast3D
+
+
 #Audio
 @export var audio_shoot : AudioStreamPlayer3D
 @export var audio_reload : AudioStreamPlayer3D
 
 @onready var gun_anim = $AnimationPlayer
-@onready var gun_barrel = $RayCast3D
+@onready var gun_barrel : RayCast3D = $RayCast3D
 
 func LoadAmmo(bullet : Global.BulletType) -> void:
 	if cylinder.size() < 6:
@@ -69,4 +74,5 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	if !can_reload && reload_timestamp < Time.get_ticks_msec():
 		can_reload = true
-	
+	if ray.is_colliding():
+				gun_barrel.look_at(ray.get_collision_point())

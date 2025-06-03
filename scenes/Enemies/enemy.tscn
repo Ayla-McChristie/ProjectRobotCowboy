@@ -1,0 +1,42 @@
+[gd_scene load_steps=8 format=3 uid="uid://b1fuqgvafyqu"]
+
+[ext_resource type="Script" path="res://scripts/Components/Health_Component.gd" id="1_y40ko"]
+[ext_resource type="Script" path="res://scenes/Enemies/Hitbox_Component.gd" id="2_fepi8"]
+[ext_resource type="AudioStream" uid="uid://cwgpogqntruuo" path="res://Audio/bell-ding.mp3" id="3_dpl6o"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_det33"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_a3rcq"]
+albedo_color = Color(0.835294, 0, 0, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_bju07"]
+material = SubResource("StandardMaterial3D_a3rcq")
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_a4t8k"]
+radius = 0.591659
+
+[node name="Enemy" type="CharacterBody3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_det33")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("SphereMesh_bju07")
+
+[node name="HealthComponent" type="Node3D" parent="." node_paths=PackedStringArray("HIT_SOUND")]
+script = ExtResource("1_y40ko")
+MAX_HEALTH = 0.0
+HIT_SOUND = NodePath("../Hit_Sound")
+
+[node name="HitboxComponent" type="Area3D" parent="." node_paths=PackedStringArray("health_component")]
+collision_layer = 2
+collision_mask = 5
+script = ExtResource("2_fepi8")
+health_component = NodePath("../HealthComponent")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HitboxComponent"]
+shape = SubResource("SphereShape3D_a4t8k")
+
+[node name="Hit_Sound" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("3_dpl6o")
+max_polyphony = 6

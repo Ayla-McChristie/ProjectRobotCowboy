@@ -1,6 +1,7 @@
-[gd_scene load_steps=8 format=3 uid="uid://b3oilb80jo0uu"]
+[gd_scene load_steps=9 format=3 uid="uid://b3oilb80jo0uu"]
 
 [ext_resource type="PackedScene" uid="uid://bakj2c6elt2fg" path="res://scenes/player.tscn" id="1_8w5hi"]
+[ext_resource type="PackedScene" uid="uid://b1fuqgvafyqu" path="res://scenes/Enemies/enemy.tscn" id="2_41w55"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lbi56"]
 albedo_color = Color(0.215686, 0.760784, 0.196078, 1)
@@ -91,3 +92,6 @@ environment = SubResource("Environment_itltl")
 [node name="player" parent="." instance=ExtResource("1_8w5hi")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0068388, -0.172524, -0.00944901)
 metadata/_edit_group_ = true
+
+[node name="Enemy" parent="." instance=ExtResource("2_41w55")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.1696, 1.31307, 0.708343)

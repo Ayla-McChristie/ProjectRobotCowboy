@@ -3,33 +3,50 @@ extends CharacterBody3D
 #Movement
 #region Movement
 var speed
-const WALK_SPEED = 5.0
-const SPRINT_SPEED = 8.0
-const JUMP_VELOCITY = 4.5
-const SENSITIVITY = 0.10
-const VERT_SENSITIVITY = 0.08
-const SENSITIVITY_DAMP = 40
 
-const AIR_DRIFT = 3.0
-const FRICTION = 7.0
+@export_category("Walking")
+@export var WALK_SPEED = 5.0
+@export var SPRINT_SPEED = 8.0
+@export var FRICTION = 7.0
 
-#Coyote time / jump assist
-const COYOTE_TIME = 0.4
+@export_category("Jumping")
+@export var JUMP_VELOCITY = 4.5
+@export var COYOTE_TIME = 0.4
+@export var AIR_DRIFT = 3.0
+
+
 var coyote_timer = 0.0
+const FALL_GRAVITY = 12
+const JUMP_GRAVITY = 7
 var has_jumped = false
 
+@export_category("Dash")
+@export var DASH_FORCE = 5
+@export var STARTUP_TIME = .2
+@export var DASH_COOLDOWN = 1
+@export var DASH_ANGLE := 1
+
+var can_dash := true
+
+ 
+
+@export_category("Camera")
+@export var VERT_SENSITIVITY = 0.08
+@export var SENSITIVITY = 0.10
+@export var SENSITIVITY_DAMP = 40
+
 #head bob
-const  BOB_FREQ = 2.0
-const BOB_AMP = 0.08
+var CAMERA_START: Vector3
+@export_category("View Bob")
+@export var  BOB_FREQ = 2.0
+@export var BOB_AMP = 0.08
+@export var IDLE_EASING := .05
 var t_bob = 0.0
 
 #fov variables
 const BASE_FOV = 75.0
 const FOV_CHANGE = 1.5
 
-#misc
-const FALL_GRAVITY = 12
-const JUMP_GRAVITY = 9.8
 #endregion
 
 var in_reload_mode = false
@@ -37,16 +54,20 @@ var in_reload_mode = false
 #References
 #region References
 @onready var head = $Head
-@onready var camera = $Head/Camera3D
+@onready var camera:Camera3D = $Head/Camera3D
 @onready var gun = $Head/Camera3D/Gun
 
 #endregion
 
 #Audio
+@export_category("Audio")
 @export var audio_jump : AudioStreamPlayer
+@export var audio_dash : AudioStreamPlayer
 
 func  _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	CAMERA_START = camera.position
+	speed = WALK_SPEED
 	
 #---------------------------------
 #CAMERA INPUT
@@ -86,21 +107,17 @@ func _physics_process(delta: float) -> void:
 		#---------------------------------
 		if has_jumped == true:
 			has_jumped = false
+		
+		if can_dash == false:
+			can_dash = true
 #endregion
+
 #region Jump
 	# Handle jump.
 	if Input.is_action_just_pressed("ui_accept") and coyote_timer < COYOTE_TIME and has_jumped == false:
 		velocity.y = JUMP_VELOCITY
 		has_jumped = true
 		audio_jump.play()
-#endregion
-	
-#region Sprint
-	# Handle sprint
-	if Input.is_action_pressed("sprint"):
-		speed = SPRINT_SPEED
-	else:
-		speed = WALK_SPEED
 #endregion
 
 #region Walking
@@ -119,24 +136,49 @@ func _physics_process(delta: float) -> void:
 		velocity.x = lerp(velocity.x, direction.x * speed, delta * AIR_DRIFT)
 		velocity.z = lerp(velocity.z, direction.z * speed, delta * AIR_DRIFT)
 #endregion
+
+#region Sprint
+	# Handle sprint
+	if Input.is_action_just_pressed("sprint") and can_dash:
+		audio_dash.play()
+		
+		if not is_on_floor():
+			velocity.y = 0
+			can_dash = false
+			
+			print_debug("cant dash")
+		
+		if input_dir.length() > .1:
+			velocity += (direction + Vector3(0, DASH_ANGLE, 0)).normalized() * DASH_FORCE
+		else:
+			velocity += (head.transform.basis * Vector3(0, DASH_ANGLE, -1)).normalized() * DASH_FORCE
 	
+	if Input.is_action_pressed("sprint"):
+		speed = SPRINT_SPEED
+	else:
+		speed = WALK_SPEED
+#endregion
+
 #region Head Bob
 	#head bob
-	if is_on_floor():
+	if is_on_floor() && input_dir.length() > .1:
 		t_bob += delta * velocity.length() * float(is_on_floor())
 		camera.transform.origin = _headbob(t_bob)
+	else:
+		camera.transform.origin = camera.transform.origin.slerp(CAMERA_START, IDLE_EASING)
 		
 #endregion
+
 #region Fov
 	#fov
 	var velocity_clamped = clamp(velocity.length(), 0.5, SPRINT_SPEED * 2)
 	var target_fov = BASE_FOV + FOV_CHANGE * velocity_clamped
 	#camera.fov = lerp(camera.fov, target_fov, delta *8.0)
 #endregion
-	
+
 #region Gun
 	#shooting 
-	if Input.is_action_just_pressed("primary_fire"):
+	if Input.is_action_just_pressed("primary_fire") || (Input.is_action_pressed("secondary_fire") && Input.is_action_pressed("primary_fire")):
 		gun.Fire()
 		pass
 	
@@ -146,8 +188,15 @@ func _physics_process(delta: float) -> void:
 
 	move_and_slide()
 
+func _process(delta: float) -> void:
+	if is_on_floor():
+		if can_dash == false:
+			can_dash = true
+			print_debug("dash up")
+
 func _headbob(time) -> Vector3:
 	var pos = Vector3.ZERO
 	pos.y = sin(time * BOB_FREQ) * BOB_AMP
 	pos.x = cos(time * BOB_FREQ/2) * BOB_AMP
 	return pos
+#func _dash_startup

@@ -3,6 +3,11 @@ extends CharacterBody3D
 #Movement
 #region Movement
 var speed
+var input_dir: Vector2
+var direction
+
+var stasis := false
+
 
 @export_category("Walking")
 @export var WALK_SPEED = 5.0
@@ -81,7 +86,83 @@ func _unhandled_input(event):
 #MOVEMENT
 #---------------------------------
 func _physics_process(delta: float) -> void:
-#region Gravity
+	_apply_gravity(delta)
+	_handle_jump()
+	_handle_walk_and_dash(delta)
+	_handle_headbob(delta)
+
+#region Fov
+	#fov
+	#var velocity_clamped = clamp(velocity.length(), 0.5, SPRINT_SPEED * 2)
+	#var target_fov = BASE_FOV + FOV_CHANGE * velocity_clamped
+	#camera.fov = lerp(camera.fov, target_fov, delta *8.0)
+#endregion
+
+#region Gun
+	#shooting 
+	if Input.is_action_just_pressed("primary_fire") || (Input.is_action_pressed("trick") && Input.is_action_pressed("primary_fire")):
+		gun.Fire()
+		pass
+	
+	if Input.is_action_pressed("reload"):
+		gun.Reload(Global.BulletType.Normal)
+#endregion
+
+	move_and_slide()
+
+#I should detangle these but fuck it
+func _handle_walk_and_dash(delta: float):
+	# Get the input direction and handle the movement/deceleration.
+	# As good practice, you should replace UI actions with custom gameplay actions.
+	input_dir = Input.get_vector("move_left", "move_right", "move_up", "move_down")
+	direction = (head.transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
+	if is_on_floor():
+		if direction:
+			velocity.x = direction.x * speed
+			velocity.z = direction.z * speed
+		else:
+			velocity.x = lerp(velocity.x, direction.x * speed, delta * FRICTION)
+			velocity.z = lerp(velocity.z, direction.z * speed, delta * FRICTION)
+	else:
+		velocity.x = lerp(velocity.x, direction.x * speed, delta * AIR_DRIFT)
+		velocity.z = lerp(velocity.z, direction.z * speed, delta * AIR_DRIFT)
+	
+	# Handle sprint
+	if Input.is_action_just_pressed("sprint") and can_dash:
+		audio_dash.play()
+		
+		if not is_on_floor():
+			velocity.y = 0
+			can_dash = false
+			
+			print_debug("cant dash")
+		
+		if input_dir.length() > .1:
+			velocity += (direction + Vector3(0, DASH_ANGLE, 0)).normalized() * DASH_FORCE
+		else:
+			velocity += (head.transform.basis * Vector3(0, DASH_ANGLE, -1)).normalized() * DASH_FORCE
+	
+	if Input.is_action_pressed("sprint"):
+		speed = SPRINT_SPEED
+	else:
+		speed = WALK_SPEED
+
+func _handle_jump():
+	# Handle jump.
+	if Input.is_action_just_pressed("ui_accept") and coyote_timer < COYOTE_TIME and has_jumped == false:
+		velocity.y = JUMP_VELOCITY
+		has_jumped = true
+		audio_jump.play()
+
+func _handle_headbob(delta: float):
+	#head bob
+	if is_on_floor() && input_dir.length() > .1:
+		t_bob += delta * velocity.length() * float(is_on_floor())
+		camera.transform.origin = _headbob(t_bob)
+	else:
+		camera.transform.origin = camera.transform.origin.slerp(CAMERA_START, IDLE_EASING)
+
+func _apply_gravity(delta: float):
 	# Add the gravity.
 	if not is_on_floor():
 		#---------------------------------
@@ -110,83 +191,6 @@ func _physics_process(delta: float) -> void:
 		
 		if can_dash == false:
 			can_dash = true
-#endregion
-
-#region Jump
-	# Handle jump.
-	if Input.is_action_just_pressed("ui_accept") and coyote_timer < COYOTE_TIME and has_jumped == false:
-		velocity.y = JUMP_VELOCITY
-		has_jumped = true
-		audio_jump.play()
-#endregion
-
-#region Walking
-	# Get the input direction and handle the movement/deceleration.
-	# As good practice, you should replace UI actions with custom gameplay actions.
-	var input_dir := Input.get_vector("move_left", "move_right", "move_up", "move_down")
-	var direction = (head.transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
-	if is_on_floor():
-		if direction:
-			velocity.x = direction.x * speed
-			velocity.z = direction.z * speed
-		else:
-			velocity.x = lerp(velocity.x, direction.x * speed, delta * FRICTION)
-			velocity.z = lerp(velocity.z, direction.z * speed, delta * FRICTION)
-	else:
-		velocity.x = lerp(velocity.x, direction.x * speed, delta * AIR_DRIFT)
-		velocity.z = lerp(velocity.z, direction.z * speed, delta * AIR_DRIFT)
-#endregion
-
-#region Sprint
-	# Handle sprint
-	if Input.is_action_just_pressed("sprint") and can_dash:
-		audio_dash.play()
-		
-		if not is_on_floor():
-			velocity.y = 0
-			can_dash = false
-			
-			print_debug("cant dash")
-		
-		if input_dir.length() > .1:
-			velocity += (direction + Vector3(0, DASH_ANGLE, 0)).normalized() * DASH_FORCE
-		else:
-			velocity += (head.transform.basis * Vector3(0, DASH_ANGLE, -1)).normalized() * DASH_FORCE
-	
-	if Input.is_action_pressed("sprint"):
-		speed = SPRINT_SPEED
-	else:
-		speed = WALK_SPEED
-#endregion
-
-#region Head Bob
-	#head bob
-	if is_on_floor() && input_dir.length() > .1:
-		t_bob += delta * velocity.length() * float(is_on_floor())
-		camera.transform.origin = _headbob(t_bob)
-	else:
-		camera.transform.origin = camera.transform.origin.slerp(CAMERA_START, IDLE_EASING)
-		
-#endregion
-
-#region Fov
-	#fov
-	var velocity_clamped = clamp(velocity.length(), 0.5, SPRINT_SPEED * 2)
-	var target_fov = BASE_FOV + FOV_CHANGE * velocity_clamped
-	#camera.fov = lerp(camera.fov, target_fov, delta *8.0)
-#endregion
-
-#region Gun
-	#shooting 
-	if Input.is_action_just_pressed("primary_fire") || (Input.is_action_pressed("secondary_fire") && Input.is_action_pressed("primary_fire")):
-		gun.Fire()
-		pass
-	
-	if Input.is_action_pressed("reload"):
-		gun.Reload(Global.BulletType.Normal)
-#endregion
-
-	move_and_slide()
 
 func _process(delta: float) -> void:
 	if is_on_floor():

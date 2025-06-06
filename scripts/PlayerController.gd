@@ -19,7 +19,6 @@ var stasis := false
 @export var COYOTE_TIME = 0.4
 @export var AIR_DRIFT = 3.0
 
-
 var coyote_timer = 0.0
 const FALL_GRAVITY = 12
 const JUMP_GRAVITY = 7
@@ -145,7 +144,6 @@ func _dash_startup():
 		timer.start(STARTUP_TIME)
 		timer.timeout.connect(_handle_dash)
 
-
 func _handle_dash():
 	stasis = false
 	# Handle sprint	
@@ -186,7 +184,7 @@ func _apply_gravity(delta: float):
 		#---------------------------------
 		#VARIABLE JUMP HEIGHT
 		#---------------------------------
-		if velocity.y > 0 and Input.is_action_pressed("jump"):
+		if velocity.y > 0 and Input.is_action_pressed("jump") and has_jumped:
 			velocity.y -= JUMP_GRAVITY * delta
 		else:
 			velocity.y -= FALL_GRAVITY * delta

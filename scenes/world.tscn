@@ -91,6 +91,7 @@ environment = SubResource("Environment_itltl")
 
 [node name="player" parent="." instance=ExtResource("1_8w5hi")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0068388, -0.172524, -0.00944901)
+DASH_FORCE = 8.0
 metadata/_edit_group_ = true
 
 [node name="Enemy" parent="." instance=ExtResource("2_41w55")]

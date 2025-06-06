@@ -26,10 +26,12 @@ const JUMP_GRAVITY = 7
 var has_jumped = false
 
 @export_category("Dash")
-@export var DASH_FORCE = 5
-@export var STARTUP_TIME = .2
-@export var DASH_COOLDOWN = 1
-@export var DASH_ANGLE := 1
+@export var DASH_FORCE := 8.0
+@export var STARTUP_TIME = .02
+@export var DASH_COOLDOWN = 1.0
+@export var DASH_ANGLE := 1.0
+var dash_timestamp : float
+var dash_timer : float
 
 var can_dash := true
 
@@ -88,7 +90,8 @@ func _unhandled_input(event):
 func _physics_process(delta: float) -> void:
 	_apply_gravity(delta)
 	_handle_jump()
-	_handle_walk_and_dash(delta)
+	_handle_walk(delta)
+	_dash_startup()
 	_handle_headbob(delta)
 
 #region Fov
@@ -108,44 +111,54 @@ func _physics_process(delta: float) -> void:
 		gun.Reload(Global.BulletType.Normal)
 #endregion
 
-	move_and_slide()
+	if !stasis:
+		move_and_slide()
 
 #I should detangle these but fuck it
-func _handle_walk_and_dash(delta: float):
+func _handle_walk(delta: float):
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
 	input_dir = Input.get_vector("move_left", "move_right", "move_up", "move_down")
 	direction = (head.transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 	if is_on_floor():
 		if direction:
-			velocity.x = direction.x * speed
-			velocity.z = direction.z * speed
+			velocity.x = direction.x * speed 
+			velocity.z = direction.z * speed 
 		else:
 			velocity.x = lerp(velocity.x, direction.x * speed, delta * FRICTION)
 			velocity.z = lerp(velocity.z, direction.z * speed, delta * FRICTION)
 	else:
 		velocity.x = lerp(velocity.x, direction.x * speed, delta * AIR_DRIFT)
 		velocity.z = lerp(velocity.z, direction.z * speed, delta * AIR_DRIFT)
-	
-	# Handle sprint
-	if Input.is_action_just_pressed("sprint") and can_dash:
-		audio_dash.play()
-		
-		if not is_on_floor():
-			velocity.y = 0
-			can_dash = false
-			
-			print_debug("cant dash")
-		
-		if input_dir.length() > .1:
-			velocity += (direction + Vector3(0, DASH_ANGLE, 0)).normalized() * DASH_FORCE
-		else:
-			velocity += (head.transform.basis * Vector3(0, DASH_ANGLE, -1)).normalized() * DASH_FORCE
-	
+
+func _dash_startup():
 	if Input.is_action_pressed("sprint"):
 		speed = SPRINT_SPEED
 	else:
 		speed = WALK_SPEED
+	
+	if Input.is_action_just_pressed("sprint") and can_dash:
+		stasis = true
+		var timer := Timer.new()
+		get_tree().root.add_child(timer)
+		timer.one_shot = true
+		timer.start(STARTUP_TIME)
+		timer.timeout.connect(_handle_dash)
+
+
+func _handle_dash():
+	stasis = false
+	# Handle sprint	
+	audio_dash.play()
+		
+	if not is_on_floor():
+		velocity.y = 0
+		can_dash = false
+		
+		_add_dash_force(DASH_FORCE)
+	else:
+		_add_dash_force(DASH_FORCE*1.5)
+	
 
 func _handle_jump():
 	# Handle jump.
@@ -192,6 +205,12 @@ func _apply_gravity(delta: float):
 		if can_dash == false:
 			can_dash = true
 
+func _add_dash_force(dash_force: float):
+	if input_dir.length() > .1:
+		velocity += (direction + Vector3(0, DASH_ANGLE, 0)).normalized() * dash_force
+	else:
+		velocity += (head.transform.basis * Vector3(0, DASH_ANGLE, -1)).normalized() * dash_force
+
 func _process(delta: float) -> void:
 	if is_on_floor():
 		if can_dash == false:
@@ -204,3 +223,6 @@ func _headbob(time) -> Vector3:
 	pos.x = cos(time * BOB_FREQ/2) * BOB_AMP
 	return pos
 #func _dash_startup
+
+func _end_stasis():
+	stasis = false

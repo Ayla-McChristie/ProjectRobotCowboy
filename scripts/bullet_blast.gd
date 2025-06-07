@@ -5,24 +5,20 @@ extends Area3D
 @export var ATTACK_DAMAGE:= 15
 @export var KNOCKBACK_FORCE:= 10
 
+var has_activated := false
+
 func _process(delta: float) -> void:
 	if particles.emitting:
 		monitoring = true
+		if !has_activated:
+			has_activated = true
 	else:
 		monitoring = false
-
-	if has_overlapping_areas():
-		a
-
-
-
-func _apply_blast():
 	
-	pass
+	if has_activated and !particles.emitting:
+		queue_free()
 
-
-func _on_area_entered(area: Area3D) -> void:
-	
+func _on_body_entered(area: Node3D) -> void:
 	var hitbox = area.get_node("HitboxComponent")
 	
 	if hitbox:

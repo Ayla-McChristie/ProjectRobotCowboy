@@ -30,7 +30,7 @@ func _on_damage_area_body_entered(area : Node3D) -> void:
 	get_tree().root.add_child(instance)
 	print_debug("bullet collided")
 	
-	var hitbox = area.get_node("HitboxComponent")
+	var hitbox = area.get_node_or_null("HitboxComponent")
 	
 	if hitbox:
 		var attack = Attack.new()

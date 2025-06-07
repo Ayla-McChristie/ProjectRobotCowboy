@@ -42,15 +42,15 @@ func Fire() -> void:
 			
 			audio_shoot.play()
 			
-			var first_bullet = cylinder.pop_front()
+			var bullet = cylinder.pop_front()
 			
-			if	first_bullet == Global.BulletType.Normal:
+			if	bullet == Global.BulletType.Normal:
 				instance = normal_bullet.instantiate()
 				instance.position = gun_barrel.global_position
 				instance.transform.basis = gun_barrel.global_transform.basis
 				get_tree().root.add_child(instance)
 			
-			if first_bullet == Global.BulletType.Blast:
+			if bullet == Global.BulletType.Blast:
 				instance = blast_bullet.instantiate()
 				instance.position = gun_barrel.global_position
 				instance.transform.basis = gun_barrel.global_transform.basis

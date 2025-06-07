@@ -106,8 +106,12 @@ func _physics_process(delta: float) -> void:
 		gun.Fire()
 		pass
 	
-	if Input.is_action_pressed("reload"):
-		gun.Reload(Global.BulletType.Normal)
+	if Input.is_action_pressed("trick"):
+		if Input.is_action_pressed("Q"):
+			gun.Reload(Global.BulletType.Normal, "Reload")
+		if  Input.is_action_pressed("E"):
+			gun.Reload(Global.BulletType.Blast, "Blast_Reload")
+			
 #endregion
 
 	if !stasis:
@@ -156,7 +160,6 @@ func _handle_dash():
 		_add_dash_force(DASH_FORCE)
 	else:
 		_add_dash_force(DASH_FORCE*1.5)
-	
 
 func _handle_jump():
 	# Handle jump.

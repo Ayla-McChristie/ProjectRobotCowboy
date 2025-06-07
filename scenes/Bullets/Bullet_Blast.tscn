@@ -1,0 +1,86 @@
+[gd_scene load_steps=14 format=3 uid="uid://y05dr235ssr6"]
+
+[ext_resource type="Script" path="res://scripts/bullet_blast.gd" id="1_f8gmc"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_a3byp"]
+size = Vector3(1, 1, 2)
+
+[sub_resource type="Gradient" id="Gradient_y3f2d"]
+colors = PackedColorArray(1, 0.2, 0, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_3aekm"]
+gradient = SubResource("Gradient_y3f2d")
+
+[sub_resource type="Curve" id="Curve_sibqk"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_08j8s"]
+curve = SubResource("Curve_sibqk")
+
+[sub_resource type="Curve" id="Curve_blop8"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_drd1i"]
+curve = SubResource("Curve_blop8")
+
+[sub_resource type="Curve" id="Curve_7nurj"]
+_data = [Vector2(0.00719425, 0.21978), 0.0, 0.0, 0, 0, Vector2(1, 0.681319), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_2e8ok"]
+curve = SubResource("Curve_7nurj")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_a3igk"]
+emission_shape_scale = Vector3(0.5, 0.5, 0.25)
+direction = Vector3(0, 0, -1)
+spread = 8.133
+initial_velocity_min = 20.0
+initial_velocity_max = 25.0
+gravity = Vector3(0, 0, 0)
+linear_accel_min = 5.37
+linear_accel_max = 5.37
+linear_accel_curve = SubResource("CurveTexture_drd1i")
+damping_min = 4.615
+damping_max = 16.721
+scale_curve = SubResource("CurveTexture_2e8ok")
+color_ramp = SubResource("GradientTexture1D_3aekm")
+emission_curve = SubResource("CurveTexture_08j8s")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_txj73"]
+transparency = 1
+vertex_color_use_as_albedo = true
+albedo_color = Color(0.933333, 0.247059, 0, 1)
+emission_enabled = true
+emission = Color(0.562252, 0.153008, 0.0517586, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_h8k10"]
+material = SubResource("StandardMaterial3D_txj73")
+radius = 0.1
+height = 0.2
+
+[node name="BulletBlast" type="Area3D"]
+collision_layer = 4
+collision_mask = 3
+monitorable = false
+script = ExtResource("1_f8gmc")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.5)
+shape = SubResource("BoxShape3D_a3byp")
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="."]
+emitting = false
+amount = 60
+lifetime = 0.2
+one_shot = true
+explosiveness = 0.65
+randomness = 0.51
+trail_lifetime = 0.1
+process_material = SubResource("ParticleProcessMaterial_a3igk")
+draw_pass_1 = SubResource("SphereMesh_h8k10")
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]

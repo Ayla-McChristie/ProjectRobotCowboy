@@ -36,7 +36,7 @@ func _on_damage_area_body_entered(area : Node3D) -> void:
 		var attack = Attack.new()
 		attack.attack_damage = ATTACK_DAMAGE
 		attack.knockback_force = KNOCKBACK_FORCE
-		
+		attack.attack_point = global_position
 		hitbox.damage(attack)
 
 	queue_free()

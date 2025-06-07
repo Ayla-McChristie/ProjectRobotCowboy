@@ -15,8 +15,9 @@ var reload_timestamp
 var reload_cooldown = 100
 var can_reload = true
 
-#Bullets
-var normal_bullet = load("res://scenes/bullet.tscn")
+#Bullets"res://scenes/Bullets/bullet.tscn"
+var normal_bullet = load("res://scenes/Bullets/bullet.tscn")
+var blast_bullet = load("res://scenes/Bullets/Bullet_Blast.tscn")
 var instance
 
 
@@ -41,16 +42,27 @@ func Fire() -> void:
 			
 			audio_shoot.play()
 			
-			instance = normal_bullet.instantiate()
-			instance.position = gun_barrel.global_position
-			instance.transform.basis = gun_barrel.global_transform.basis
-			get_tree().root.add_child(instance)
-			return cylinder.pop_front()
+			var first_bullet = cylinder.pop_front()
+			
+			if	first_bullet == Global.BulletType.Normal:
+				instance = normal_bullet.instantiate()
+				instance.position = gun_barrel.global_position
+				instance.transform.basis = gun_barrel.global_transform.basis
+				get_tree().root.add_child(instance)
+			
+			if first_bullet == Global.BulletType.Blast:
+				instance = blast_bullet.instantiate()
+				instance.position = gun_barrel.global_position
+				instance.transform.basis = gun_barrel.global_transform.basis
+				var particles:GPUParticles3D = instance.get_node("GPUParticles3D")
+				if	particles:
+					particles.emitting = true
+				get_tree().root.add_child(instance)
 		
-func Reload(bullet : Global.BulletType) -> void:
+func Reload(bullet : Global.BulletType, anim: String) -> void:
 	if cylinder.size() < 6:
 		if !gun_anim.is_playing() && !Input.is_action_pressed("primary_fire"):
-			gun_anim.play("Reload")
+			gun_anim.play(anim)
 			
 			audio_reload.play()
 			

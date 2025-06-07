@@ -3,7 +3,7 @@ extends Node
 enum BulletType {
 	Normal,
 	Richochet,
-	Recoil,
+	Blast,
 	Power,
 	Oil,
 	Spark

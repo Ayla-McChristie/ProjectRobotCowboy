@@ -40,7 +40,8 @@ var can_dash := true
 @export var VERT_SENSITIVITY = 0.08
 @export var SENSITIVITY = 0.10
 @export var SENSITIVITY_DAMP = 40
-
+@export var RECOIL_FORCE := 3.0
+var recoils_applied := 0
 #head bob
 var CAMERA_START: Vector3
 @export_category("View Bob")
@@ -103,6 +104,11 @@ func _physics_process(delta: float) -> void:
 #region Gun
 	#shooting 
 	if Input.is_action_just_pressed("primary_fire") || (Input.is_action_pressed("trick") && Input.is_action_pressed("primary_fire")):
+		if gun.cylinder.size() > 0 && !is_on_floor():
+			if gun.cylinder[0] == Global.BulletType.Blast:
+				velocity += camera.get_global_transform().basis.z.normalized() * (RECOIL_FORCE / (recoils_applied + 1))
+		
+		recoils_applied += 1
 		gun.Fire()
 		pass
 	
@@ -205,6 +211,9 @@ func _apply_gravity(delta: float):
 		
 		if can_dash == false:
 			can_dash = true
+		
+		if recoils_applied > 0:
+			recoils_applied = 0
 
 func _add_dash_force(dash_force: float):
 	if input_dir.length() > .1:

@@ -81,6 +81,9 @@ grow_vertical = 0
 rotation = -3.14159
 vertical = true
 script = ExtResource("3_857pk")
+EMPTY_COLOR = Color(0.303233, 0.303233, 0.303233, 1)
+REG_COLOR = Color(1, 0.933333, 0, 1)
+BLAST_COLOR = Color(1, 0, 0, 1)
 
 [node name="box1" type="ColorRect" parent="BulletTracker"]
 custom_minimum_size = Vector2(0, 40)

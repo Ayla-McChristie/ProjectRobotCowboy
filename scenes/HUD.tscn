@@ -1,12 +1,22 @@
-[gd_scene load_steps=2 format=3 uid="uid://dnfj8hm8i4vlo"]
+[gd_scene load_steps=5 format=3 uid="uid://dnfj8hm8i4vlo"]
 
 [ext_resource type="Script" path="res://scripts/Reticle.gd" id="1_r7krc"]
+[ext_resource type="Script" path="res://scenes/UI_Ammo_Amount.gd" id="2_lhwoi"]
+[ext_resource type="Script" path="res://scenes/bullet_tracker.gd" id="3_857pk"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_24ik4"]
+font_size = 40
+font_color = Color(0.286275, 0.470588, 0.913725, 1)
+outline_size = 20
+outline_color = Color(0.466667, 0.156863, 0.505882, 1)
 
 [node name="HUD" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_top = -8.0
+offset_bottom = -8.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
@@ -21,3 +31,92 @@ anchor_bottom = 0.5
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_r7krc")
+
+[node name="Amount" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -144.0
+offset_top = -88.0
+offset_right = -104.0
+offset_bottom = -33.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "0"
+label_settings = SubResource("LabelSettings_24ik4")
+script = ExtResource("2_lhwoi")
+
+[node name="Amount2" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -104.0
+offset_top = -88.0
+offset_right = -64.0
+offset_bottom = -33.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "/ 6"
+label_settings = SubResource("LabelSettings_24ik4")
+
+[node name="BulletTracker" type="BoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -80.0
+offset_top = -96.0
+offset_right = -40.0
+offset_bottom = 204.0
+grow_horizontal = 0
+grow_vertical = 0
+rotation = -3.14159
+vertical = true
+script = ExtResource("3_857pk")
+
+[node name="box1" type="ColorRect" parent="BulletTracker"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+
+[node name="HSeparator" type="HSeparator" parent="BulletTracker"]
+layout_mode = 2
+
+[node name="box2" type="ColorRect" parent="BulletTracker"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+
+[node name="HSeparator2" type="HSeparator" parent="BulletTracker"]
+layout_mode = 2
+
+[node name="box3" type="ColorRect" parent="BulletTracker"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+
+[node name="HSeparator3" type="HSeparator" parent="BulletTracker"]
+layout_mode = 2
+
+[node name="box4" type="ColorRect" parent="BulletTracker"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+
+[node name="HSeparator4" type="HSeparator" parent="BulletTracker"]
+layout_mode = 2
+
+[node name="box5" type="ColorRect" parent="BulletTracker"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+
+[node name="HSeparator5" type="HSeparator" parent="BulletTracker"]
+layout_mode = 2
+
+[node name="box6" type="ColorRect" parent="BulletTracker"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2

@@ -104,7 +104,7 @@ func _physics_process(delta: float) -> void:
 #region Gun
 	#shooting 
 	if Input.is_action_just_pressed("primary_fire") || (Input.is_action_pressed("trick") && Input.is_action_pressed("primary_fire")):
-		if gun.cylinder.size() > 0 && !is_on_floor():
+		if gun.cylinder.size() > 0:
 			if gun.cylinder[0] == Global.BulletType.Blast:
 				velocity += camera.get_global_transform().basis.z.normalized() * (RECOIL_FORCE / (recoils_applied + 1))
 		

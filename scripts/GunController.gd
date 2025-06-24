@@ -1,5 +1,5 @@
 extends Node3D
-
+class_name GunController
 const MAXAMMO = 6
 
 #Camera Ray

@@ -24,6 +24,7 @@ audio_dash = NodePath("Audio/Audio_Dash")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.10988, 0)
+cast_shadow = 0
 mesh = SubResource("CapsuleMesh_kq1vs")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]

@@ -1,8 +1,8 @@
 [gd_scene load_steps=5 format=3 uid="uid://dnfj8hm8i4vlo"]
 
-[ext_resource type="Script" path="res://scripts/Reticle.gd" id="1_r7krc"]
-[ext_resource type="Script" path="res://scenes/UI_Ammo_Amount.gd" id="2_lhwoi"]
-[ext_resource type="Script" path="res://scenes/bullet_tracker.gd" id="3_857pk"]
+[ext_resource type="Script" path="res://scripts/Reticle.gd" id="1_7qf86"]
+[ext_resource type="Script" path="res://scripts/UI/UI_Ammo_Amount.gd" id="2_eyy4i"]
+[ext_resource type="Script" path="res://scripts/UI/bullet_tracker.gd" id="3_2o55q"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_24ik4"]
 font_size = 40
@@ -30,7 +30,7 @@ anchor_right = 0.5
 anchor_bottom = 0.5
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_r7krc")
+script = ExtResource("1_7qf86")
 
 [node name="Amount" type="Label" parent="."]
 layout_mode = 1
@@ -47,7 +47,7 @@ grow_horizontal = 0
 grow_vertical = 0
 text = "0"
 label_settings = SubResource("LabelSettings_24ik4")
-script = ExtResource("2_lhwoi")
+script = ExtResource("2_eyy4i")
 
 [node name="Amount2" type="Label" parent="."]
 layout_mode = 1
@@ -80,7 +80,7 @@ grow_horizontal = 0
 grow_vertical = 0
 rotation = -3.14159
 vertical = true
-script = ExtResource("3_857pk")
+script = ExtResource("3_2o55q")
 EMPTY_COLOR = Color(0.303233, 0.303233, 0.303233, 1)
 REG_COLOR = Color(1, 0.933333, 0, 1)
 BLAST_COLOR = Color(1, 0, 0, 1)

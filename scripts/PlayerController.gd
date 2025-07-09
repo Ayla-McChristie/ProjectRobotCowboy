@@ -10,8 +10,8 @@ var stasis := false
 
 
 @export_category("Walking")
-@export var WALK_SPEED = 5.0
-@export var SPRINT_SPEED = 8.0
+@export var WALK_SPEED = 8.0
+@export var SPRINT_SPEED = 10.0
 @export var FRICTION = 7.0
 
 @export_category("Jumping")
@@ -64,6 +64,8 @@ var in_reload_mode = false
 @onready var camera:Camera3D = $Head/Camera3D
 @onready var gun = $Head/Camera3D/Gun
 
+@onready var speed_lines: Control = $SpeedLines
+
 #endregion
 
 #Audio
@@ -75,7 +77,7 @@ func  _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	CAMERA_START = camera.position
 	speed = WALK_SPEED
-	
+	$SpeedLines.material.set_shader_parameter("line_density", 0.0)
 #---------------------------------
 #CAMERA INPUT
 #---------------------------------
@@ -93,6 +95,11 @@ func _physics_process(delta: float) -> void:
 	_handle_walk(delta)
 	_dash_startup()
 	_handle_headbob(delta)
+	
+	if velocity.length() > 9:
+		$SpeedLines.material.set_shader_parameter("line_density", 1.0)
+	else:
+		$SpeedLines.material.set_shader_parameter("line_density", 0.0)
 
 #region Fov
 	#fov

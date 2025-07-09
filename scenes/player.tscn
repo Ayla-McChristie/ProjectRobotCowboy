@@ -1,16 +1,35 @@
-[gd_scene load_steps=9 format=3 uid="uid://bakj2c6elt2fg"]
+[gd_scene load_steps=13 format=3 uid="uid://bakj2c6elt2fg"]
 
 [ext_resource type="Script" path="res://scripts/PlayerController.gd" id="1_r2wyn"]
 [ext_resource type="Script" path="res://scripts/MainCamera.gd" id="2_q8mr1"]
 [ext_resource type="PackedScene" uid="uid://bjx8ps4cs681b" path="res://scenes/gun.tscn" id="2_rf2sv"]
 [ext_resource type="AudioStream" uid="uid://28bqi3qjutr7" path="res://Audio/Jump.wav" id="3_07slr"]
-[ext_resource type="PackedScene" uid="uid://dnfj8hm8i4vlo" path="res://scenes/HUD.tscn" id="4_ic3md"]
+[ext_resource type="PackedScene" uid="uid://dnfj8hm8i4vlo" path="res://scenes/UI/HUD.tscn" id="4_ic3md"]
 [ext_resource type="AudioStream" uid="uid://b3d1xhuuyqamq" path="res://Audio/Party Favor.mp3" id="5_lrl7c"]
+[ext_resource type="Shader" path="res://scenes/UI/Shader_speed_lines.gdshader" id="7_6pvat"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_kq1vs"]
 
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_ee7ij"]
 points = PackedVector3Array(-0.125207, -0.532801, -0.480507, 0.0227831, 0.47607, 0.498884, 0.169713, 0.559144, 0.464172, 0.231051, -0.803591, 0.320455, 0.40741, 0.651043, -0.243523, -0.482789, 0.594843, 0.0822132, -0.362868, -0.682312, 0.289697, 0.469044, -0.654529, -0.0662713, -0.127444, 0.842701, -0.338103, -0.393435, -0.683942, -0.244717, 0.438255, 0.623309, 0.200849, 0.0841477, 0.977454, 0.114795, -0.0682023, -0.976458, -0.12927, 0.20055, -0.563129, -0.451454, -0.185527, 0.595453, -0.453475, -0.273363, 0.592268, 0.407754, -0.00693649, -0.476823, 0.49966, 0.375821, -0.588614, 0.316955, 0.111579, 0.563059, -0.481177, -0.41725, 0.527866, -0.270497, -0.484546, -0.596972, -0.0665097, -0.279747, 0.908561, 0.0533361, -0.250197, -0.880712, 0.205319, 0.263647, -0.902771, -0.127394, 0.293368, 0.871526, -0.157196, 0.373412, -0.526319, -0.328246, 0.499663, 0.476641, -0.00688856, 0.0531056, 0.875001, 0.324703, -0.154543, -0.590854, 0.465879, -0.0972799, -0.782358, -0.398188, -0.387649, -0.498171, 0.31565, -0.30068, -0.587995, -0.388901)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_ujb3x"]
+noise_type = 5
+frequency = 0.2
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_00enh"]
+noise = SubResource("FastNoiseLite_ujb3x")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_o7tq0"]
+shader = ExtResource("7_6pvat")
+shader_parameter/line_color = Color(1, 1, 1, 1)
+shader_parameter/line_count = 0.5
+shader_parameter/line_density = 1.0
+shader_parameter/line_faloff = 1.0
+shader_parameter/mask_size = 0.0
+shader_parameter/mask_edge = 1.0
+shader_parameter/animation_speed = 20.0
+shader_parameter/noise = SubResource("NoiseTexture2D_00enh")
 
 [node name="player" type="CharacterBody3D" node_paths=PackedStringArray("audio_jump", "audio_dash")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0068388, 0.151876, -0.00944901)
@@ -62,3 +81,12 @@ stream = ExtResource("5_lrl7c")
 volume_db = -19.676
 
 [node name="HUD" parent="." instance=ExtResource("4_ic3md")]
+
+[node name="SpeedLines" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_o7tq0")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2

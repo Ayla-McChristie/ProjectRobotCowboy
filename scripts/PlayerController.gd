@@ -34,8 +34,6 @@ var dash_timer : float
 
 var can_dash := true
 
- 
-
 @export_category("Camera")
 @export var VERT_SENSITIVITY = 0.08
 @export var SENSITIVITY = 0.10
@@ -73,11 +71,16 @@ var in_reload_mode = false
 @export var audio_jump : AudioStreamPlayer
 @export var audio_dash : AudioStreamPlayer
 
+#UI
+@export var speed_line_fade_in = .35
+var _speed_line_intensity = 0.0
+var _speed_line_velocity_buffer := 9.0
+
+
 func  _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	CAMERA_START = camera.position
 	speed = WALK_SPEED
-	$SpeedLines.material.set_shader_parameter("line_density", 0.0)
 #---------------------------------
 #CAMERA INPUT
 #---------------------------------
@@ -96,10 +99,12 @@ func _physics_process(delta: float) -> void:
 	_dash_startup()
 	_handle_headbob(delta)
 	
-	if velocity.length() > 9:
-		$SpeedLines.material.set_shader_parameter("line_density", 1.0)
+	if velocity.length() > _speed_line_velocity_buffer:
+		_speed_line_intensity = lerp(_speed_line_intensity, 1.0, speed_line_fade_in)
 	else:
-		$SpeedLines.material.set_shader_parameter("line_density", 0.0)
+		_speed_line_intensity = lerp(_speed_line_intensity, 0.0, speed_line_fade_in)
+
+	$SpeedLines.material.set_shader_parameter("line_density", _speed_line_intensity)
 
 #region Fov
 	#fov

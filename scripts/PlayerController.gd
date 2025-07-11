@@ -98,13 +98,7 @@ func _physics_process(delta: float) -> void:
 	_handle_walk(delta)
 	_dash_startup()
 	_handle_headbob(delta)
-	
-	if velocity.length() > _speed_line_velocity_buffer:
-		_speed_line_intensity = lerp(_speed_line_intensity, 1.0, speed_line_fade_in)
-	else:
-		_speed_line_intensity = lerp(_speed_line_intensity, 0.0, speed_line_fade_in)
-
-	$SpeedLines.material.set_shader_parameter("line_density", _speed_line_intensity)
+	_handle_speedlines()
 
 #region Fov
 	#fov
@@ -116,11 +110,11 @@ func _physics_process(delta: float) -> void:
 #region Gun
 	#shooting 
 	if Input.is_action_just_pressed("primary_fire") || (Input.is_action_pressed("trick") && Input.is_action_pressed("primary_fire")):
-		if gun.cylinder.size() > 0:
-			if gun.cylinder[0] == Global.BulletType.Blast:
-				velocity += camera.get_global_transform().basis.z.normalized() * (RECOIL_FORCE / (recoils_applied + 1))
+		#if gun.cylinder.size() > 0:
+			#if gun.cylinder[0] == Global.BulletType.Blast:
+				#velocity += camera.get_global_transform().basis.z.normalized() * (RECOIL_FORCE / (recoils_applied + 1))
 		
-		recoils_applied += 1
+		#recoils_applied += 1
 		gun.Fire()
 		pass
 	
@@ -232,6 +226,14 @@ func _add_dash_force(dash_force: float):
 		velocity += (direction + Vector3(0, DASH_ANGLE, 0)).normalized() * dash_force
 	else:
 		velocity += (head.transform.basis * Vector3(0, DASH_ANGLE, -1)).normalized() * dash_force
+
+func _handle_speedlines():
+	if velocity.length() > _speed_line_velocity_buffer:
+		_speed_line_intensity = lerp(_speed_line_intensity, 1.0, speed_line_fade_in)
+	else:
+		_speed_line_intensity = lerp(_speed_line_intensity, 0.0, speed_line_fade_in)
+		
+	$SpeedLines.material.set_shader_parameter("line_density", _speed_line_intensity)
 
 func _process(delta: float) -> void:
 	if is_on_floor():

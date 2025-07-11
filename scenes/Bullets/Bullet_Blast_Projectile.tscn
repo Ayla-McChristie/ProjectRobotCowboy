@@ -1,53 +1,29 @@
-[gd_scene load_steps=11 format=3 uid="uid://u2e7o272djon"]
+[gd_scene load_steps=5 format=3 uid="uid://u2e7o272djon"]
 
 [ext_resource type="Script" path="res://scripts/bullet_blast_projectile.gd" id="1_g7df4"]
 
-[sub_resource type="Curve" id="Curve_bv6l1"]
-_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
-point_count = 2
-
-[sub_resource type="CurveTexture" id="CurveTexture_ohmpq"]
-curve = SubResource("Curve_bv6l1")
-
-[sub_resource type="Curve" id="Curve_n3e54"]
-min_value = -1.0
-_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
-point_count = 2
-
-[sub_resource type="CurveTexture" id="CurveTexture_g27vc"]
-curve = SubResource("Curve_n3e54")
-
-[sub_resource type="Curve" id="Curve_mpyo3"]
-_data = [Vector2(0, 0), 0.0, 0.666533, 0, 0, Vector2(1, 1), 0.038187, 0.0, 0, 0]
-point_count = 2
-
-[sub_resource type="CurveTexture" id="CurveTexture_ofs8b"]
-curve = SubResource("Curve_mpyo3")
-
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_ebqeh"]
-gravity = Vector3(0, 0, 0)
-scale_min = 2.0
-scale_max = 4.0
-scale_curve = SubResource("CurveTexture_ofs8b")
-alpha_curve = SubResource("CurveTexture_ohmpq")
-hue_variation_curve = SubResource("CurveTexture_g27vc")
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_a5ofh"]
-transparency = 1
-vertex_color_use_as_albedo = true
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_oo5xu"]
 albedo_color = Color(1, 0, 0, 1)
 
-[sub_resource type="SphereMesh" id="SphereMesh_4b026"]
-material = SubResource("StandardMaterial3D_a5ofh")
+[sub_resource type="SphereMesh" id="SphereMesh_d8smh"]
+material = SubResource("StandardMaterial3D_oo5xu")
+radius = 0.25
+height = 0.5
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_wirna"]
+radius = 0.3
 
 [node name="BulletBlastProjectile" type="Node3D"]
 script = ExtResource("1_g7df4")
 
-[node name="GPUParticles3D" type="GPUParticles3D" parent="."]
-emitting = false
-amount = 3
-lifetime = 0.5
-one_shot = true
-explosiveness = 0.52
-process_material = SubResource("ParticleProcessMaterial_ebqeh")
-draw_pass_1 = SubResource("SphereMesh_4b026")
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("SphereMesh_d8smh")
+
+[node name="DamageArea" type="Area3D" parent="."]
+collision_layer = 4
+collision_mask = 3
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="DamageArea"]
+shape = SubResource("SphereShape3D_wirna")
+
+[connection signal="body_entered" from="DamageArea" to="." method="_on_damage_area_body_entered"]

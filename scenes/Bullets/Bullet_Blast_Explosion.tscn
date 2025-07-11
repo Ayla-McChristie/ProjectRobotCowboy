@@ -1,5 +1,65 @@
-[gd_scene format=3 uid="uid://bqf0yahp8wum2"]
+[gd_scene load_steps=12 format=3 uid="uid://bqf0yahp8wum2"]
+
+[ext_resource type="Script" path="res://scripts/bullet_blast_explosion.gd" id="1_y5rqt"]
+
+[sub_resource type="Curve" id="Curve_e47le"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_ohmpq"]
+curve = SubResource("Curve_e47le")
+
+[sub_resource type="Curve" id="Curve_5klkm"]
+min_value = -1.0
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_g27vc"]
+curve = SubResource("Curve_5klkm")
+
+[sub_resource type="Curve" id="Curve_lfrwe"]
+_data = [Vector2(0, 0), 0.0, 0.666533, 0, 0, Vector2(1, 1), 0.038187, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_ofs8b"]
+curve = SubResource("Curve_lfrwe")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_ala6m"]
+gravity = Vector3(0, 0, 0)
+scale_min = 2.0
+scale_max = 6.0
+scale_curve = SubResource("CurveTexture_ofs8b")
+alpha_curve = SubResource("CurveTexture_ohmpq")
+hue_variation_curve = SubResource("CurveTexture_g27vc")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_a5ofh"]
+transparency = 1
+vertex_color_use_as_albedo = true
+albedo_color = Color(1, 0, 0, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_dujmd"]
+material = SubResource("StandardMaterial3D_a5ofh")
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_2l41c"]
+radius = 2.84157
 
 [node name="BulletBlastExplosion" type="Area3D"]
+collision_mask = 5
+script = ExtResource("1_y5rqt")
 
 [node name="Explosion_Sound" type="AudioStreamPlayer3D" parent="."]
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="."]
+emitting = false
+amount = 4
+lifetime = 0.62
+one_shot = true
+explosiveness = 0.52
+process_material = SubResource("ParticleProcessMaterial_ala6m")
+draw_pass_1 = SubResource("SphereMesh_dujmd")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_2l41c")
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

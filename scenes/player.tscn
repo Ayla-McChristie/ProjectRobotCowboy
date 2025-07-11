@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://bakj2c6elt2fg"]
+[gd_scene load_steps=16 format=3 uid="uid://bakj2c6elt2fg"]
 
 [ext_resource type="Script" path="res://scripts/PlayerController.gd" id="1_r2wyn"]
 [ext_resource type="Script" path="res://scripts/MainCamera.gd" id="2_q8mr1"]
@@ -7,6 +7,8 @@
 [ext_resource type="PackedScene" uid="uid://dnfj8hm8i4vlo" path="res://scenes/UI/HUD.tscn" id="4_ic3md"]
 [ext_resource type="AudioStream" uid="uid://b3d1xhuuyqamq" path="res://Audio/Party Favor.mp3" id="5_lrl7c"]
 [ext_resource type="Shader" path="res://scenes/UI/Shader_speed_lines.gdshader" id="7_6pvat"]
+[ext_resource type="PackedScene" uid="uid://d1nip1hjflc1m" path="res://scenes/Components/health_component.tscn" id="8_go5na"]
+[ext_resource type="PackedScene" uid="uid://cq638s7mke8me" path="res://scenes/Components/hitbox_component.tscn" id="9_077ct"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_kq1vs"]
 
@@ -31,9 +33,12 @@ shader_parameter/mask_edge = 1.0
 shader_parameter/animation_speed = 20.0
 shader_parameter/noise = SubResource("NoiseTexture2D_00enh")
 
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_fohgd"]
+
 [node name="player" type="CharacterBody3D" node_paths=PackedStringArray("audio_jump", "audio_dash")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0068388, 0.151876, -0.00944901)
 collision_layer = 4
+collision_mask = 11
 script = ExtResource("1_r2wyn")
 STARTUP_TIME = 0.05
 DASH_ANGLE = 0.45
@@ -90,3 +95,14 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+
+[node name="HealthComponent" parent="." instance=ExtResource("8_go5na")]
+
+[node name="HitboxComponent" parent="." node_paths=PackedStringArray("health_component") instance=ExtResource("9_077ct")]
+collision_layer = 4
+collision_mask = 10
+health_component = NodePath("../HealthComponent")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HitboxComponent"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.11478, 0)
+shape = SubResource("CapsuleShape3D_fohgd")

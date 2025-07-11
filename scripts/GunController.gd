@@ -17,7 +17,8 @@ var can_reload = true
 
 #Bullets"res://scenes/Bullets/bullet.tscn"
 var normal_bullet = load("res://scenes/Bullets/bullet.tscn")
-var blast_bullet = load("res://scenes/Bullets/Bullet_Blast.tscn")
+#var blast_bullet = load("res://scenes/Bullets/Bullet_Blast.tscn")
+var blast_bullet = load("res://scenes/Bullets/Bullet_Blast_Projectile.tscn")
 var instance
 
 

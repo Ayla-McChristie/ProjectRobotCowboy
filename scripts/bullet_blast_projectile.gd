@@ -9,24 +9,14 @@ const SPEED = 40.00
 
 var expolsion = load("res://scenes/Bullets/Bullet_Blast_Explosion.tscn")
 
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	pass # Replace with function body.
-
-
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	position += transform.basis * Vector3(0,0, -SPEED) * delta
 		
 
-
 func _on_damage_area_body_entered(area : Node3D) -> void:
 	var instance = expolsion.instantiate()
-	if ray.is_colliding():
-		instance.position = ray.get_collision_point()
-	else: 
-		instance.position = global_position
-	instance.emitting = true
+	instance.position = global_position
 	get_tree().root.add_child(instance)
 	print_debug("bullet collided")
 	

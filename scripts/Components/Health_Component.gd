@@ -5,7 +5,6 @@ class_name HealthComponent
 @export var MAX_HEALTH := 10.0
 @export var HIT_SOUND : AudioStreamPlayer3D
 
-
 var health: float
 
 func _ready() -> void:
@@ -13,7 +12,9 @@ func _ready() -> void:
 
 
 func damage(attack: Attack):
-	HIT_SOUND.play()
+	if  HIT_SOUND:
+		HIT_SOUND.play()
+	
 	
 	if MAX_HEALTH != 0:
 		health -= attack.attack_damage

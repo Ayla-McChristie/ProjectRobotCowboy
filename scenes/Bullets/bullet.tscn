@@ -23,7 +23,7 @@ mesh = SubResource("BoxMesh_5doif")
 
 [node name="DamageArea" type="Area3D" parent="."]
 collision_layer = 4
-collision_mask = 3
+collision_mask = 11
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="DamageArea"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00183105, -9.15527e-05, -0.0540314)

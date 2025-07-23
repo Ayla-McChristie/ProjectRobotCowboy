@@ -97,6 +97,7 @@ grow_vertical = 2
 mouse_filter = 2
 
 [node name="HealthComponent" parent="." instance=ExtResource("8_go5na")]
+IS_PLAYER = true
 
 [node name="HitboxComponent" parent="." node_paths=PackedStringArray("health_component") instance=ExtResource("9_077ct")]
 collision_layer = 4

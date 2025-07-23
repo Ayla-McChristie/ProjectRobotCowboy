@@ -32,12 +32,9 @@ func _on_body_entered(body: Node3D) -> void:
 			
 			print_debug(body.get_collision_layer())
 			
-			if body.get_collision_layer() == 3:
-				attack.attack_damage = 0.0
-				attack.knockback_force = KNOCKBACK_FORCE
-			else:
-				attack.attack_damage = ATTACK_DAMAGE
-				attack.knockback_force = KNOCKBACK_FORCE
+			attack.attack_damage = ATTACK_DAMAGE
+			attack.knockback_force = KNOCKBACK_FORCE
 			
+			attack.is_player_attack = true
 			attack.attack_point = global_position
 			hitbox.damage(attack)

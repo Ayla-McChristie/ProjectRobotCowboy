@@ -21,9 +21,12 @@ mesh = SubResource("SphereMesh_d8smh")
 
 [node name="DamageArea" type="Area3D" parent="."]
 collision_layer = 4
-collision_mask = 3
+collision_mask = 11
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="DamageArea"]
 shape = SubResource("SphereShape3D_wirna")
+
+[node name="RayCast3D" type="RayCast3D" parent="."]
+target_position = Vector3(0, 0, -0.5)
 
 [connection signal="body_entered" from="DamageArea" to="." method="_on_damage_area_body_entered"]

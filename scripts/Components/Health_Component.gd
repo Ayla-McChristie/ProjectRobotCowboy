@@ -1,9 +1,11 @@
 extends Node3D
 class_name HealthComponent
 
-
+@onready var body: CharacterBody3D = $".."
+@onready var collision_shape_3d: CollisionShape3D = $"../CollisionShape3D"
 @export var MAX_HEALTH := 10.0
 @export var HIT_SOUND : AudioStreamPlayer3D
+@export var IS_PLAYER : bool = false
 
 var health: float
 
@@ -12,12 +14,19 @@ func _ready() -> void:
 
 
 func damage(attack: Attack):
+	#play sound
 	if  HIT_SOUND:
 		HIT_SOUND.play()
 	
-	
-	if MAX_HEALTH != 0:
-		health -= attack.attack_damage
-		print_debug("took " + str(attack.attack_damage) + " damage")
-		if health <= 0:
-			get_parent().queue_free()
+		#deal damage
+		if MAX_HEALTH != 0:
+			if !(attack.is_player_attack && IS_PLAYER):
+				health -= attack.attack_damage
+			print_debug(str(self.name) + " took " + str(attack.attack_damage) + " damage")
+			if health <= 0:
+				get_parent().queue_free()
+		
+
+	#apply knockback
+	if body:
+		body.velocity += attack.attack_point.direction_to(collision_shape_3d.global_position).normalized() * attack.knockback_force

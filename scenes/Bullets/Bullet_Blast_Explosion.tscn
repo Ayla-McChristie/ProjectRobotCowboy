@@ -44,7 +44,8 @@ material = SubResource("StandardMaterial3D_a5ofh")
 radius = 2.84157
 
 [node name="BulletBlastExplosion" type="Area3D"]
-collision_mask = 5
+collision_layer = 4
+collision_mask = 15
 script = ExtResource("1_y5rqt")
 
 [node name="Explosion_Sound" type="AudioStreamPlayer3D" parent="."]

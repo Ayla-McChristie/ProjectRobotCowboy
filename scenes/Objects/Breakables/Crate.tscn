@@ -1,0 +1,41 @@
+[gd_scene load_steps=9 format=3 uid="uid://c4b5dum8rkc1l"]
+
+[ext_resource type="PhysicsMaterial" uid="uid://c5xnvmwmopoh4" path="res://physics_materials/Crate.tres" id="1_0m1dh"]
+[ext_resource type="PackedScene" uid="uid://d1nip1hjflc1m" path="res://scenes/Components/health_component.tscn" id="1_boenx"]
+[ext_resource type="PackedScene" uid="uid://cq638s7mke8me" path="res://scenes/Components/hitbox_component.tscn" id="2_5abbt"]
+[ext_resource type="AudioStream" uid="uid://bwbg7ummgcvqw" path="res://Audio/Crate_Impact.wav" id="3_uxxin"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_5y3q3"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_apa00"]
+transparency = 1
+albedo_color = Color(0.509253, 0.352748, 0.177838, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_ly6nb"]
+material = SubResource("StandardMaterial3D_apa00")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_urs21"]
+
+[node name="Crate" type="RigidBody3D"]
+collision_layer = 2
+collision_mask = 15
+physics_material_override = ExtResource("1_0m1dh")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_5y3q3")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_ly6nb")
+
+[node name="HealthComponent" parent="." instance=ExtResource("1_boenx")]
+MAX_HEALTH = 0.0
+
+[node name="HitboxComponent" parent="." node_paths=PackedStringArray("health_component") instance=ExtResource("2_5abbt")]
+health_component = NodePath("../HealthComponent")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HitboxComponent"]
+shape = SubResource("BoxShape3D_urs21")
+
+[node name="SFX_Crate_Impact" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("3_uxxin")
+volume_db = -10.667

@@ -55,7 +55,7 @@ func Fire() -> void:
 				instance = blast_bullet.instantiate()
 				instance.position = gun_barrel.global_position
 				instance.transform.basis = gun_barrel.global_transform.basis
-				#var particles:GPUParticles3D = instance.get_node("GPUParticles3D")
+				#var particles:GPUParticles3D += instance.get_node("GPUParticles3D")
 				#if	particles:
 					#particles.emitting = true
 				get_tree().root.add_child(instance)

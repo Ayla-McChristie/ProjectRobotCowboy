@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://ppypqwk6q4gd"
+path="res://.godot/imported/target-large.obj-566fa0bce6ae71c5dfc02a4c56c0ddce.mesh"
+
+[deps]
+
+files=["res://.godot/imported/target-large.obj-566fa0bce6ae71c5dfc02a4c56c0ddce.mesh"]
+
+source_file="res://resources/Kenny_Resources/kenney_blaster-kit_2.1/Models/OBJ format/target-large.obj"
+dest_files=["res://.godot/imported/target-large.obj-566fa0bce6ae71c5dfc02a4c56c0ddce.mesh", "res://.godot/imported/target-large.obj-566fa0bce6ae71c5dfc02a4c56c0ddce.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

@@ -1,16 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://p3qvvw04evkp"]
+[gd_scene load_steps=4 format=3 uid="uid://p3qvvw04evkp"]
 
 [ext_resource type="Script" path="res://scripts/bullet.gd" id="1_ohk67"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1xxgr"]
-albedo_color = Color(1, 1, 0, 1)
-emission_enabled = true
-emission = Color(1, 1, 0.14902, 1)
-emission_energy_multiplier = 5.04
-
-[sub_resource type="BoxMesh" id="BoxMesh_5doif"]
-material = SubResource("StandardMaterial3D_1xxgr")
-size = Vector3(0.05, 0.05, 1)
+[ext_resource type="ArrayMesh" uid="uid://broidx8jsv2jh" path="res://resources/Kenny_Resources/kenney_blaster-kit_2.1/Models/OBJ format/bullet-foam-tip.obj" id="2_xilaj"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_7tkin"]
 size = Vector3(0.1, 0.1, 1.12)
@@ -19,7 +10,8 @@ size = Vector3(0.1, 0.1, 1.12)
 script = ExtResource("1_ohk67")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-mesh = SubResource("BoxMesh_5doif")
+transform = Transform3D(3.64515, 0, 0, 0, -3.87942e-07, 3.64515, 0, -8.87508, -1.59335e-07, 0, 0, 0.236449)
+mesh = ExtResource("2_xilaj")
 
 [node name="DamageArea" type="Area3D" parent="."]
 collision_layer = 4

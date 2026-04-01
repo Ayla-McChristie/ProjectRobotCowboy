@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://yvpt1042s0fr"
+path="res://.godot/imported/scope-small.obj-f00c8e3079697b4e7ba669daf8801aae.mesh"
+
+[deps]
+
+files=["res://.godot/imported/scope-small.obj-f00c8e3079697b4e7ba669daf8801aae.mesh"]
+
+source_file="res://resources/Kenny_Resources/kenney_blaster-kit_2.1/Models/OBJ format/scope-small.obj"
+dest_files=["res://.godot/imported/scope-small.obj-f00c8e3079697b4e7ba669daf8801aae.mesh", "res://.godot/imported/scope-small.obj-f00c8e3079697b4e7ba669daf8801aae.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

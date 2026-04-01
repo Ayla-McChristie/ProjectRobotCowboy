@@ -1,14 +1,9 @@
-[gd_scene load_steps=11 format=3 uid="uid://bjx8ps4cs681b"]
+[gd_scene load_steps=10 format=3 uid="uid://bjx8ps4cs681b"]
 
 [ext_resource type="Script" path="res://scripts/GunController.gd" id="1_2prt4"]
+[ext_resource type="ArrayMesh" uid="uid://c5efwi8n4nqti" path="res://resources/Kenny_Resources/kenney_blaster-kit_2.1/Models/OBJ format/blaster-a.obj" id="2_cl4jm"]
 [ext_resource type="AudioStream" uid="uid://b87umoqlc2suf" path="res://Audio/Shoot.wav" id="2_lu20t"]
 [ext_resource type="AudioStream" uid="uid://c166flbr82ume" path="res://Audio/woosh.mp3" id="3_rc0gy"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_04jxk"]
-albedo_color = Color(0.588235, 0.235294, 0.568627, 1)
-
-[sub_resource type="BoxMesh" id="BoxMesh_fej0y"]
-size = Vector3(0.25, 0.25, 1)
 
 [sub_resource type="Animation" id="Animation_fldkb"]
 resource_name = "Blast_Reload"
@@ -128,9 +123,8 @@ audio_shoot = NodePath("Audio_Shooting")
 audio_reload = NodePath("Audio_Reloading")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-material_override = SubResource("StandardMaterial3D_04jxk")
 cast_shadow = 0
-mesh = SubResource("BoxMesh_fej0y")
+mesh = ExtResource("2_cl4jm")
 
 [node name="RayCast3D" type="RayCast3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.508215)
